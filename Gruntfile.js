@@ -48,7 +48,8 @@ module.exports = function(grunt) {
         },
         shell: {
             create_product_dir: "mkdir -p product",
-            cp_index_to_product: "cp index.html product"
+            cp_index_to_product: "cp app/index.html product",
+            cp_assets_to_product: "cp -r app/assets product"
         }
         });
 
@@ -66,6 +67,7 @@ module.exports = function(grunt) {
     grunt.registerTask('build', ['jshint',
                                  'shell:create_product_dir',
                                  'shell:cp_index_to_product',
+                                 'shell:cp_assets_to_product',
                                  'browserify',
                                  'uglify']);
     grunt.registerTask('deploy', ['ssh_deploy:staging']);
