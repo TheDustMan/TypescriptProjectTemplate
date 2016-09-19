@@ -16,3 +16,8 @@ grunt build
 
 To deploy, run:
 grunt deploy
+
+To-Do:
+-Use minified app javascript file
+-Figure out how to create compressed packaged that gets uploaded
+-Get rid of warnings on initial npm install
