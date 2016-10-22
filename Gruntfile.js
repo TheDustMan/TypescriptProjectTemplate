@@ -6,7 +6,7 @@ module.exports = function(grunt) {
         secret: grunt.file.readJSON('credentials.json'),
         environments: {
             options: {
-                current_symlink: 'current',
+                current_symlink: 'TypescriptProjectTemplate',
                 local_path: 'product'
             },
             staging: {
@@ -15,7 +15,7 @@ module.exports = function(grunt) {
                     username: '<%= secret.credentials.username %>',
                     password: '<%= secret.credentials.password %>',
                     port: '<%= secret.credentials.port %>',
-                    deploy_path: '/home/dustman/dustweb.org/javascript/workflow/project1/staging',
+                    deploy_path: '/home/dustman/dustweb.org/javascript/typescript/c1',
                     debug: true,
                     release_to_keep: '5'
                 }
@@ -26,11 +26,18 @@ module.exports = function(grunt) {
                     username: '<%= secret.credentials.username %>',
                     password: '<%= secret.credentials.password %>',
                     port: '<%= secret.credentials.port %>',
-                    deploy_path: '/home/dustman/dustweb.org/javascript/workflow/project1/production',
+                    deploy_path: '/home/dustman/dustweb.org/javascript/typescript/c1',
                     release_to_keep: '5'
                 }
             }
             },
+        ts: {
+            default: {
+                src: ['app/**/*.ts'],
+                outDir: 'app/typescript/js',
+                target: 'es5'
+            }
+        },
         uglify: {
             options: {
                 banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
@@ -49,7 +56,8 @@ module.exports = function(grunt) {
         shell: {
             create_product_dir: "mkdir -p product",
             cp_index_to_product: "cp app/index.html product",
-            cp_assets_to_product: "cp -r app/assets product"
+            cp_assets_to_product: "cp -r app/assets product",
+            rm_typescript_generated: "rm -rf app/typescript/js/*"
         }
         });
 
@@ -59,12 +67,15 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-ssh-deploy');
     grunt.loadNpmTasks('grunt-browserify');    
     grunt.loadNpmTasks('grunt-shell');
+    grunt.loadNpmTasks('grunt-ts');
 
     // Default task(s).
     grunt.registerTask('default', ['browserify']);
     grunt.registerTask('default', ['uglify']);
     grunt.registerTask('default', ['jshint']);
-    grunt.registerTask('build', ['jshint',
+    grunt.registerTask('build', ['shell:rm_typescript_generated',
+                                 'jshint',
+                                 'ts',
                                  'shell:create_product_dir',
                                  'shell:cp_index_to_product',
                                  'shell:cp_assets_to_product',
