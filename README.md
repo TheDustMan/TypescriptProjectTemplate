@@ -1,4 +1,4 @@
-This repository can be used as a starting point for any javascript project.
+This repository can be used as a starting point for any javascript project that utilizes Typescript.
 ### Prerequisites: 
 - Have npm installed
 - Have grunt-cli installed
